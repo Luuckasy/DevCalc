@@ -3,9 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>DevEx Manager</title>
+    <title>DevEx Manager v8</title>
     <link rel="icon" href="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/Robux_2019_Logo_gold.svg/500px-Robux_2019_Logo_gold.svg.png" type="image/png">
+    
     <style>
+        /* --- ESTILOS BASE (MANTIDOS) --- */
         :root {
             --bg: #0f0f0f;
             --surface: #1a1a1a;
@@ -22,143 +24,107 @@
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             background-color: var(--bg);
             color: var(--text-main);
-            margin: 0;
-            padding: 15px;
-            display: flex;
-            justify-content: center;
-            min-height: 100vh;
-            box-sizing: border-box;
+            margin: 0; padding: 15px;
+            display: flex; justify-content: center;
+            min-height: 100vh; box-sizing: border-box;
             overscroll-behavior: none;
         }
 
         .app-container {
-            background-color: var(--surface);
-            width: 100%;
-            max-width: 500px;
-            border-radius: 16px;
-            padding: 20px;
+            background-color: var(--surface); width: 100%; max-width: 500px;
+            border-radius: 16px; padding: 20px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.6);
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
+            display: flex; flex-direction: column; gap: 20px;
         }
 
-        /* HEADER */
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-bottom: 15px;
-            border-bottom: 1px solid var(--border);
-        }
+        /* --- INPUTS & CALCULADORA --- */
+        header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 15px; border-bottom: 1px solid var(--border); }
         h2 { margin: 0; font-size: 1.2rem; color: var(--primary); }
-        .rate-badge {
-            background: var(--surface-light);
-            padding: 5px 10px;
-            border-radius: 8px;
-            border: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .rate-input {
-            width: 50px;
-            background: transparent;
-            border: none;
-            color: white;
-            font-weight: bold;
-            text-align: right;
-            font-size: 1rem;
-        }
-        .icon-btn { background: none; border: none; font-size: 1.1rem; padding: 0; cursor: pointer; }
-
-        /* INPUTS */
+        .rate-badge { background: var(--surface-light); padding: 5px 10px; border-radius: 8px; border: 1px solid var(--border); display: flex; align-items: center; gap: 8px; }
+        .rate-input { width: 50px; background: transparent; border: none; color: white; font-weight: bold; text-align: right; font-size: 1rem; }
+        .icon-btn { background: none; border: none; font-size: 1.1rem; padding: 0; cursor: pointer; color: #888; }
+        
         .input-stack { display: flex; flex-direction: column; gap: 12px; }
         .big-input-group { position: relative; }
-        .big-input-group label {
-            position: absolute; top: 8px; left: 12px; font-size: 0.75rem; color: var(--text-sec); font-weight: 700;
-        }
-        .big-input {
-            width: 100%;
-            background: var(--input-bg);
-            border: 1px solid var(--border);
-            padding: 24px 12px 8px 12px;
-            border-radius: 10px;
-            color: white;
-            font-size: 1.2rem;
-            box-sizing: border-box;
-            transition: border 0.2s;
-        }
+        .big-input-group label { position: absolute; top: 8px; left: 12px; font-size: 0.75rem; color: var(--text-sec); font-weight: 700; }
+        .big-input { width: 100%; background: var(--input-bg); border: 1px solid var(--border); padding: 24px 12px 8px 12px; border-radius: 10px; color: white; font-size: 1.2rem; box-sizing: border-box; transition: border 0.2s; }
         .big-input:focus { outline: none; border-color: var(--primary); background: #161616; }
-        
-        /* Cores indicativas */
         #inp-robux { border-left: 4px solid #00a2ff; }
         #inp-usd { border-left: 4px solid #28a745; }
         #inp-brl { border-left: 4px solid var(--primary); }
 
-        /* SETTINGS GRID */
-        .settings-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-        }
+        .settings-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         .small-input-group label { display: block; font-size: 0.75rem; color: var(--text-sec); margin-bottom: 4px; }
-        .small-input {
-            width: 100%; padding: 10px; background: var(--surface-light);
-            border: 1px solid var(--border); border-radius: 8px; color: white; box-sizing: border-box;
-        }
+        .small-input { width: 100%; padding: 10px; background: var(--surface-light); border: 1px solid var(--border); border-radius: 8px; color: white; box-sizing: border-box; }
 
-        /* SUMMARY */
-        .financial-summary {
-            background: #222; border-radius: 12px; padding: 15px; border: 1px solid var(--border);
-        }
-        .summary-row {
-            display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.9rem; color: #bbb;
-        }
-        .summary-row.highlight {
-            color: white; font-weight: bold; border-top: 1px solid #333; padding-top: 8px; margin-top: 8px; font-size: 1rem;
-        }
+        .financial-summary { background: #222; border-radius: 12px; padding: 15px; border: 1px solid var(--border); }
+        .summary-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.9rem; color: #bbb; }
+        .summary-row.highlight { color: white; font-weight: bold; border-top: 1px solid #333; padding-top: 8px; margin-top: 8px; font-size: 1rem; }
         .val-gross { color: #f0ad4e; }
-        .val-tax { color: var(--danger); }
         .val-net { color: var(--primary); }
+        .val-tax { color: var(--danger); }
 
-        /* PARTNERS */
-        .partners-section {
-            background: var(--surface-light); border-radius: 12px; padding: 15px;
-        }
-        .partners-header {
-            display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;
-        }
-        .btn-add {
-            background: #00b06f; color: white; border: none; padding: 5px 12px;
-            border-radius: 20px; font-size: 0.8rem; font-weight: bold; cursor: pointer;
-        }
+        .btn-invoice { width: 100%; background: #333; color: white; border: 1px solid #555; padding: 12px; border-radius: 10px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+        .btn-invoice:hover { background: #444; border-color: var(--primary); }
+
+        /* --- SÓCIOS --- */
+        .partners-section { background: var(--surface-light); border-radius: 12px; padding: 15px; }
+        .partners-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .btn-add { background: #00b06f; color: white; border: none; padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; cursor: pointer; }
         .partner-list { display: flex; flex-direction: column; gap: 8px; }
-        .partner-row {
-            display: flex; align-items: center; gap: 8px; background: rgba(0,0,0,0.2);
-            padding: 8px; border-radius: 8px;
-        }
+        .partner-row { display: flex; align-items: center; gap: 8px; background: rgba(0,0,0,0.2); padding: 8px; border-radius: 8px; }
         .p-name { flex: 2; background: transparent; border: none; color: white; border-bottom: 1px solid #444; padding: 4px; }
         .p-pct { width: 50px; background: #111; border: 1px solid #444; color: var(--primary); text-align: center; border-radius: 4px; padding: 5px; }
         .p-result { flex: 2; text-align: right; font-size: 0.85rem; line-height: 1.2; }
-        .p-tax-share { font-size: 0.7rem; color: #666; display: block; }
         .btn-del { color: #666; background: none; border: none; font-size: 1.2rem; padding: 0 5px; }
 
-        #toast {
-            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-            background: var(--primary); color: #000; padding: 8px 20px;
-            border-radius: 20px; font-weight: bold; font-size: 0.85rem;
-            opacity: 0; pointer-events: none; transition: opacity 0.3s;
+        /* --- INVOICE MODAL --- */
+        #invoice-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 999; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box; overflow-y: auto; }
+        .invoice-paper { background: white; color: #333; width: 100%; max-width: 800px; min-height: 600px; padding: 40px; border-radius: 4px; position: relative; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; }
+        
+        /* Controles de Perfil */
+        .profile-bar { display: flex; gap: 5px; margin-bottom: 5px; }
+        .profile-select { flex: 1; font-size: 0.75rem; padding: 4px; border: 1px solid #ccc; border-radius: 4px; background: #f9f9f9; }
+        .btn-save-profile { background: #eee; border: 1px solid #ccc; border-radius: 4px; cursor: pointer; font-size: 0.9rem; padding: 0 8px; }
+        .btn-save-profile:hover { background: #ddd; }
+
+        /* Campos Invoice */
+        .editable { border: 1px dashed transparent; width: 100%; font-size: 1rem; color: #333; background: transparent; padding: 2px; resize: none; font-family: inherit; }
+        .editable:hover, .editable:focus { border-color: #ccc; background: #f0f8ff; outline: none; }
+        .inv-header { display: flex; justify-content: space-between; margin-bottom: 40px; border-bottom: 2px solid #eee; padding-bottom: 20px; }
+        .inv-title { font-size: 2.5rem; font-weight: bold; margin: 0; }
+        .inv-row { display: flex; justify-content: space-between; margin-bottom: 40px; gap: 40px; }
+        .inv-col { flex: 1; }
+        .inv-label { font-size: 0.75rem; color: #888; text-transform: uppercase; margin-bottom: 5px; font-weight: bold; }
+        .inv-table { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
+        .inv-table th { text-align: left; border-bottom: 2px solid #333; padding: 10px 0; font-size: 0.85rem; }
+        .inv-table td { padding: 15px 0; border-bottom: 1px solid #eee; }
+        .bank-box { background: #f4f4f4; padding: 15px; border-radius: 4px; font-size: 0.9rem; }
+        .inv-total { text-align: right; font-size: 1.5rem; font-weight: bold; padding-top: 10px; }
+
+        .invoice-controls { position: fixed; bottom: 20px; right: 20px; display: flex; gap: 10px; }
+        .btn-action { padding: 10px 20px; border-radius: 30px; border: none; font-weight: bold; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+        .btn-print { background: var(--primary); color: black; }
+        .btn-close { background: #444; color: white; }
+
+        #toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--primary); color: #000; padding: 8px 20px; border-radius: 20px; font-weight: bold; opacity: 0; pointer-events: none; transition: opacity 0.3s; z-index: 2000; }
+
+        @media print {
+            body { background: white; padding: 0; }
+            .app-container, .invoice-controls, .profile-bar { display: none !important; }
+            #invoice-modal { display: block !important; position: static; background: white; width: 100%; height: auto; padding: 0; }
+            .invoice-paper { box-shadow: none; max-width: 100%; margin: 0; padding: 0; }
+            .editable { border: none !important; resize: none; background: transparent !important; }
         }
     </style>
 </head>
 <body>
 
-<div class="app-container">
+<div class="app-container" id="app">
     <header>
         <div>
             <h2>DevEx Manager</h2>
-            <div style="font-size: 0.7rem; color: #666;">Ultimate v6</div>
+            <div style="font-size: 0.7rem; color: #666;">Ultimate v8 (Profiles)</div>
         </div>
         <div class="rate-badge">
             <span style="font-size: 0.8rem; color: var(--primary);">USD</span>
@@ -169,297 +135,304 @@
     </header>
 
     <div class="input-stack">
-        <div class="big-input-group">
-            <label>🎮 ROBUX</label>
-            <input type="number" id="inp-robux" class="big-input" placeholder="0">
-        </div>
-        <div class="big-input-group">
-            <label>🇺🇸 USD (Bruto)</label>
-            <input type="number" id="inp-usd" class="big-input" placeholder="0.00">
-        </div>
-        <div class="big-input-group">
-            <label>🇧🇷 BRL (Líquido Estimado)</label>
-            <input type="number" id="inp-brl" class="big-input" placeholder="0,00">
-        </div>
+        <div class="big-input-group"><label>🎮 ROBUX</label><input type="number" id="inp-robux" class="big-input" placeholder="0"></div>
+        <div class="big-input-group"><label>🇺🇸 USD (Bruto)</label><input type="number" id="inp-usd" class="big-input" placeholder="0.00"></div>
+        <div class="big-input-group"><label>🇧🇷 BRL (Líquido)</label><input type="number" id="inp-brl" class="big-input" placeholder="0,00"></div>
     </div>
 
     <div class="settings-grid">
-        <div class="small-input-group">
-            <label>Taxa DevEx</label>
-            <select id="cfg-devex" class="small-input">
-                <option value="0.0038" selected>Nova ($0.0038)</option>
-                <option value="0.0035">Antiga ($0.0035)</option>
-            </select>
-        </div>
-        <div class="small-input-group">
-            <label>Fee Banco ($)</label>
-            <input type="number" id="cfg-fee" class="small-input" value="26">
-        </div>
-        <div class="small-input-group">
-            <label>Imposto Base (%)</label>
-            <input type="number" id="cfg-tax" class="small-input" value="10.82">
-        </div>
-        <div style="display: flex; align-items: center; gap: 8px; padding-top: 15px;">
-            <input type="checkbox" id="cfg-extra" style="width: 20px; height: 20px;">
-            <label for="cfg-extra" style="font-size: 0.8rem; line-height: 1.1;">Lucro > 50k<br>(+10%)</label>
-        </div>
+        <div class="small-input-group"><label>Taxa DevEx</label><select id="cfg-devex" class="small-input"><option value="0.0038" selected>Nova ($0.0038)</option><option value="0.0035">Antiga ($0.0035)</option></select></div>
+        <div class="small-input-group"><label>Fee Banco ($)</label><input type="number" id="cfg-fee" class="small-input" value="26"></div>
+        <div class="small-input-group"><label>Imposto (%)</label><input type="number" id="cfg-tax" class="small-input" value="10.82"></div>
+        <div style="display:flex;align-items:center;gap:8px;padding-top:15px;"><input type="checkbox" id="cfg-extra"><label for="cfg-extra" style="font-size:0.8rem;">+10% (>50k)</label></div>
     </div>
 
     <div class="financial-summary">
-        <div class="summary-row">
-            <span>Faturamento Bruto (BRL)</span>
-            <span id="res-gross-brl" class="val-gross">R$ 0,00</span>
-        </div>
-        <div class="summary-row">
-            <span>Impostos Totais</span>
-            <span id="res-total-tax" class="val-tax">R$ 0,00</span>
-        </div>
-        <div class="summary-row highlight">
-            <span>LUCRO LÍQUIDO TOTAL</span>
-            <span id="res-net-brl" class="val-net">R$ 0,00</span>
-        </div>
+        <div class="summary-row"><span>Bruto (BRL)</span><span id="res-gross-brl" class="val-gross">R$ 0,00</span></div>
+        <div class="summary-row"><span>Impostos</span><span id="res-total-tax" class="val-tax">R$ 0,00</span></div>
+        <div class="summary-row highlight"><span>LÍQUIDO</span><span id="res-net-brl" class="val-net">R$ 0,00</span></div>
+        <button class="btn-invoice" id="open-invoice">📄 Gerar Invoice (PDF)</button>
     </div>
 
     <div class="partners-section">
-        <div class="partners-header">
-            <span style="font-size: 0.9rem; font-weight: bold;">Sócios</span>
-            <button class="btn-add" id="btn-add-partner">+ Add</button>
-        </div>
+        <div class="partners-header"><span style="font-weight:bold;">Sócios</span><button class="btn-add" id="btn-add-partner">+ Add</button></div>
         <div id="partners-list" class="partner-list"></div>
-        <div style="margin-top: 10px; font-size: 0.75rem; color: #666; text-align: right;">
-            Alocado: <span id="alloc-total">100%</span>
+        <div style="margin-top:10px;text-align:right;font-size:0.75rem;color:#666;">Alocado: <span id="alloc-total">100%</span></div>
+    </div>
+</div>
+
+<div id="invoice-modal">
+    <div class="invoice-paper">
+        <div class="inv-header">
+            <div>
+                <h1 class="inv-title">INVOICE</h1>
+                <div style="color:#666;">Commercial Invoice / Fatura</div>
+            </div>
+            <div style="text-align:right;">
+                <input class="editable" id="inv-num" value="#INV-001" style="text-align:right;font-weight:bold;">
+                <input class="editable" id="inv-date" value="Date: 2026-01-31" style="text-align:right;">
+            </div>
         </div>
+
+        <div class="inv-row">
+            <div class="inv-col">
+                <div class="inv-label">FROM (SEUS DADOS)</div>
+                <div class="profile-bar">
+                    <select id="sel-profile-from" class="profile-select"><option value="">Selecione...</option></select>
+                    <button class="btn-save-profile" onclick="saveProfile('from')" title="Salvar atual como novo perfil">💾</button>
+                </div>
+                <input class="editable" id="inv-from-name" placeholder="Seu Nome Completo" style="font-weight:bold;">
+                <textarea class="editable" id="inv-from-address" style="height:80px;" placeholder="Seu Endereço&#10;Cidade, Estado&#10;CPF/CNPJ"></textarea>
+            </div>
+            <div class="inv-col">
+                <div class="inv-label">TO (PAGADOR)</div>
+                <div style="font-weight:bold;margin-bottom:5px;">Roblox Corporation</div>
+                <div style="color:#333;font-size:0.9rem;">970 Park Place, Suite 100<br>San Mateo, CA 94403<br>United States</div>
+            </div>
+        </div>
+
+        <table class="inv-table">
+            <thead><tr><th width="70%">DESCRIPTION</th><th width="30%" style="text-align:right;">AMOUNT (USD)</th></tr></thead>
+            <tbody>
+                <tr>
+                    <td><input class="editable" value="Roblox Developer Exchange (DevEx) Program - Digital Content Services"></td>
+                    <td style="text-align:right;" id="inv-amount-row">$0.00</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="inv-row">
+            <div class="inv-col">
+                <div class="inv-label">BANKING INFORMATION</div>
+                <div class="profile-bar">
+                    <select id="sel-profile-bank" class="profile-select"><option value="">Selecione...</option></select>
+                    <button class="btn-save-profile" onclick="saveProfile('bank')" title="Salvar atual como novo banco">💾</button>
+                </div>
+                <div class="bank-box">
+                    <textarea class="editable" id="inv-bank-details" style="height:100px;background:transparent;" placeholder="Bank Name: ...&#10;SWIFT/BIC: ...&#10;IBAN: ..."></textarea>
+                </div>
+            </div>
+            <div class="inv-col" style="display:flex;flex-direction:column;justify-content:flex-start;">
+                <div class="inv-total">Total: <span id="inv-total-display">$0.00</span></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="invoice-controls">
+        <button class="btn-action btn-close" id="close-invoice">Fechar</button>
+        <button class="btn-action btn-print" id="print-invoice">🖨️ Salvar PDF</button>
     </div>
 </div>
 
 <div id="toast">Salvo!</div>
 
 <script>
-    // ESTADO GLOBAL
+    // --- ESTADO & DADOS ---
     const state = {
-        usdRate: 5.00,
-        manualRate: false,
-        lastSource: 'robux', // 'robux', 'usd', ou 'brl' (Resolve o bug da reatividade)
-        
+        usdRate: 5.00, manualRate: false, lastSource: 'robux',
         values: { robux: 0, grossUsd: 0, netBrl: 0, grossBrl: 0, totalTax: 0 },
-        partners: [{ id: 1, name: 'Você', pct: 100 }]
+        partners: [{ id: 1, name: 'Você', pct: 100 }],
+        profiles: { from: [], bank: [] } // Lista de perfis salvos
     };
 
-    // ELEMENTOS
     const el = {
         robux: document.getElementById('inp-robux'),
         usd: document.getElementById('inp-usd'),
-        brl: document.getElementById('inp-brl'), // Input Líquido
-        
-        devex: document.getElementById('cfg-devex'),
-        fee: document.getElementById('cfg-fee'),
-        tax: document.getElementById('cfg-tax'),
-        extra: document.getElementById('cfg-extra'),
-        
-        usdRate: document.getElementById('usd-rate'),
-        btnLock: document.getElementById('btn-lock'),
-        btnRefresh: document.getElementById('btn-refresh'),
-        
-        resGrossBrl: document.getElementById('res-gross-brl'),
-        resTotalTax: document.getElementById('res-total-tax'),
-        resNetBrl: document.getElementById('res-net-brl'),
-        
-        pList: document.getElementById('partners-list'),
-        btnAddP: document.getElementById('btn-add-partner'),
-        allocTotal: document.getElementById('alloc-total'),
-        toast: document.getElementById('toast')
+        brl: document.getElementById('inp-brl'),
+        devex: document.getElementById('cfg-devex'), fee: document.getElementById('cfg-fee'), tax: document.getElementById('cfg-tax'), extra: document.getElementById('cfg-extra'),
+        usdRate: document.getElementById('usd-rate'), btnLock: document.getElementById('btn-lock'), btnRefresh: document.getElementById('btn-refresh'),
+        resGrossBrl: document.getElementById('res-gross-brl'), resTotalTax: document.getElementById('res-total-tax'), resNetBrl: document.getElementById('res-net-brl'),
+        pList: document.getElementById('partners-list'), btnAddP: document.getElementById('btn-add-partner'), allocTotal: document.getElementById('alloc-total'),
+        toast: document.getElementById('toast'),
+        // Invoice
+        modalInv: document.getElementById('invoice-modal'), btnOpenInv: document.getElementById('open-invoice'), btnCloseInv: document.getElementById('close-invoice'), btnPrintInv: document.getElementById('print-invoice'),
+        invAmount: document.getElementById('inv-amount-row'), invTotal: document.getElementById('inv-total-display'), invDate: document.getElementById('inv-date'),
+        invNum: document.getElementById('inv-num'),
+        invFromName: document.getElementById('inv-from-name'), invFromAddr: document.getElementById('inv-from-address'),
+        invBank: document.getElementById('inv-bank-details'),
+        selProFrom: document.getElementById('sel-profile-from'), selProBank: document.getElementById('sel-profile-bank')
     };
 
-    // CALCULO CENTRAL
-    function updateCalculations(source) {
-        // Se a fonte for 'config', usamos a última fonte editada pelo usuário
-        if (source === 'config') source = state.lastSource;
-        else state.lastSource = source;
-
-        // Inputs de Configuração
-        const rate = parseFloat(el.usdRate.value) || 5.00;
-        const devex = parseFloat(el.devex.value);
-        const fee = parseFloat(el.fee.value) || 0;
-        let taxPct = parseFloat(el.tax.value) || 0;
-        if (el.extra.checked) taxPct += 10;
-
+    // --- CALCULADORA (MANTIDA) ---
+    function updateCalc(src) {
+        if(src === 'config') src = state.lastSource; else state.lastSource = src;
+        const rate = parseFloat(el.usdRate.value) || 5.00, devex = parseFloat(el.devex.value);
+        const fee = parseFloat(el.fee.value) || 0, taxPct = (parseFloat(el.tax.value)||0) + (el.extra.checked ? 10 : 0);
         let v = state.values;
 
-        // LÓGICA DE FLUXO (CIMA P/ BAIXO ou BAIXO P/ CIMA)
-        if (source === 'robux') {
-            v.robux = parseFloat(el.robux.value) || 0;
-            v.grossUsd = v.robux * devex;
-            const netUsd = Math.max(0, v.grossUsd - fee);
-            v.grossBrl = netUsd * rate;
-            v.netBrl = v.grossBrl * (1 - (taxPct/100));
-        } 
-        else if (source === 'usd') {
-            v.grossUsd = parseFloat(el.usd.value) || 0;
-            v.robux = Math.ceil(v.grossUsd / devex);
+        if(src === 'robux') { v.robux = parseFloat(el.robux.value)||0; v.grossUsd = v.robux * devex; }
+        else if(src === 'usd') { v.grossUsd = parseFloat(el.usd.value)||0; v.robux = Math.ceil(v.grossUsd / devex); }
+        else if(src === 'brl') {
+            v.netBrl = parseFloat(el.brl.value)||0;
+            const taxFactor = 1-(taxPct/100);
+            v.grossBrl = taxFactor>0 ? v.netBrl/taxFactor : 0;
+            const netUsd = v.grossBrl/rate;
+            v.grossUsd = netUsd>0 ? netUsd+fee : 0;
+            v.robux = Math.ceil(v.grossUsd/devex);
+        }
+        
+        // Cascata comum se não veio do reverso
+        if(src !== 'brl') {
             const netUsd = Math.max(0, v.grossUsd - fee);
             v.grossBrl = netUsd * rate;
             v.netBrl = v.grossBrl * (1 - (taxPct/100));
         }
-        else if (source === 'brl') {
-            // Engenharia Reversa (Meta Líquida -> Robux Necessário)
-            v.netBrl = parseFloat(el.brl.value) || 0;
-            const taxFactor = 1 - (taxPct/100);
-            v.grossBrl = taxFactor > 0 ? v.netBrl / taxFactor : 0;
-            
-            const netUsd = v.grossBrl / rate;
-            // Só adiciona a fee se tiver valor, senao distorce o zero
-            v.grossUsd = netUsd > 0 ? netUsd + fee : 0;
-            v.robux = Math.ceil(v.grossUsd / devex);
-        }
-
         v.totalTax = v.grossBrl - v.netBrl;
 
-        // ATUALIZAR INPUTS (Evita loop infinito no campo ativo)
-        if (source !== 'robux') el.robux.value = v.robux > 0 ? v.robux : '';
-        if (source !== 'usd') el.usd.value = v.grossUsd > 0 ? v.grossUsd.toFixed(2) : '';
-        if (source !== 'brl') el.brl.value = v.netBrl > 0 ? v.netBrl.toFixed(2) : '';
+        if(src!=='robux') el.robux.value = v.robux||'';
+        if(src!=='usd') el.usd.value = v.grossUsd ? v.grossUsd.toFixed(2) : '';
+        if(src!=='brl') el.brl.value = v.netBrl ? v.netBrl.toFixed(2) : '';
 
-        // ATUALIZAR RESUMO
-        el.resGrossBrl.innerText = formatMoney(v.grossBrl);
-        el.resTotalTax.innerText = formatMoney(v.totalTax);
-        el.resNetBrl.innerText = formatMoney(v.netBrl);
-
-        renderPartners();
-        saveState();
+        el.resGrossBrl.innerText = fmt(v.grossBrl); el.resTotalTax.innerText = fmt(v.totalTax); el.resNetBrl.innerText = fmt(v.netBrl);
+        renderPartners(); saveState();
     }
 
-    // SÓCIOS
+    // --- SÓCIOS ---
     function renderPartners() {
-        el.pList.innerHTML = '';
-        let totalPct = 0;
-        const netTotal = state.values.netBrl;
-        const taxTotal = state.values.totalTax;
-
-        state.partners.forEach((p, index) => {
-            totalPct += p.pct;
-            const pNet = netTotal * (p.pct / 100);
-            const pTax = taxTotal * (p.pct / 100);
-
-            const row = document.createElement('div');
-            row.className = 'partner-row';
-            row.innerHTML = `
-                <input type="text" class="p-name" value="${p.name}" onchange="updatePartner(${index}, 'name', this.value)">
-                <input type="number" class="p-pct" value="${p.pct}" onchange="updatePartner(${index}, 'pct', this.value)">
-                <span style="font-size:0.8rem; color:#666;">%</span>
-                <div class="p-result">
-                    <div style="font-weight:bold; color:white;">${formatMoney(pNet)}</div>
-                    <span class="p-tax-share">Imp: ${formatMoney(pTax)}</span>
-                </div>
-                ${index > 0 ? `<button class="btn-del" onclick="removePartner(${index})">×</button>` : ''}
-            `;
-            el.pList.appendChild(row);
+        el.pList.innerHTML = ''; let tPct = 0;
+        state.partners.forEach((p,i) => {
+            tPct += p.pct;
+            const pNet = state.values.netBrl * (p.pct/100), pTax = state.values.totalTax * (p.pct/100);
+            el.pList.innerHTML += `
+                <div class="partner-row">
+                    <input class="p-name" value="${p.name}" onchange="updP(${i},'name',this.value)">
+                    <input type="number" class="p-pct" value="${p.pct}" onchange="updP(${i},'pct',this.value)"><span>%</span>
+                    <div class="p-result"><div style="font-weight:bold;">${fmt(pNet)}</div><span style="font-size:0.7rem;">Imp: ${fmt(pTax)}</span></div>
+                    ${i>0 ? `<button class="btn-del" onclick="remP(${i})">×</button>` : ''}
+                </div>`;
         });
-
-        el.allocTotal.innerText = totalPct + "%";
-        el.allocTotal.style.color = totalPct !== 100 ? '#ff4d4d' : '#00e68e';
+        el.allocTotal.innerText = tPct+'%'; el.allocTotal.style.color = tPct!==100?'#ff4d4d':'#00e68e';
     }
+    window.updP = (i,f,v) => { if(f==='pct') v=parseFloat(v)||0; state.partners[i][f]=v; renderPartners(); saveState(); };
+    window.remP = (i) => { state.partners.splice(i,1); renderPartners(); saveState(); };
+    el.btnAddP.addEventListener('click', () => { state.partners.push({id:Date.now(), name:'Sócio', pct:0}); renderPartners(); });
 
-    // FUNÇÕES AUXILIARES
-    window.updatePartner = (idx, field, val) => {
-        if (field === 'pct') val = parseFloat(val) || 0;
-        state.partners[idx][field] = val;
-        renderPartners(); // Não precisa recalcular tudo, só redistribuir
-        saveState();
-    };
-
-    window.removePartner = (idx) => {
-        state.partners.splice(idx, 1);
-        renderPartners();
-        saveState();
-    };
-
-    el.btnAddP.addEventListener('click', () => {
-        state.partners.push({ id: Date.now(), name: 'Sócio', pct: 0 });
-        renderPartners();
-    });
-
-    const formatMoney = (val) => val.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-
-    async function fetchRate() {
-        if (!state.manualRate) {
-            el.btnRefresh.style.transform = 'rotate(180deg)';
-            try {
-                const r = await fetch('https://economia.awesomeapi.com.br/last/USD-BRL');
-                const d = await r.json();
-                const rate = parseFloat(d.USDBRL.bid);
-                // CORREÇÃO: Fixar em 2 casas para display
-                el.usdRate.value = rate.toFixed(2);
-            } catch(e) { console.error(e); }
-            setTimeout(() => el.btnRefresh.style.transform = 'rotate(0deg)', 500);
-            updateCalculations('config');
-        }
-    }
-
-    function saveState() {
-        const data = {
-            manualRate: state.manualRate,
-            usdRate: el.usdRate.value,
-            lastSource: state.lastSource,
-            devex: el.devex.value,
-            fee: el.fee.value,
-            tax: el.tax.value,
-            extra: el.extra.checked,
-            partners: state.partners,
-            lastVal: el.robux.value // Salva ultimo input Robux
-        };
-        localStorage.setItem('devex_ultimate_v6', JSON.stringify(data));
+    // --- PERFIS (PROFILES) ---
+    function renderProfiles() {
+        // Render Selects
+        el.selProFrom.innerHTML = '<option value="">Carregar Perfil...</option>';
+        state.profiles.from.forEach((p, idx) => {
+            el.selProFrom.innerHTML += `<option value="${idx}">${p.title}</option>`;
+        });
         
-        el.toast.style.opacity = '1';
-        setTimeout(() => el.toast.style.opacity = '0', 1500);
+        el.selProBank.innerHTML = '<option value="">Carregar Banco...</option>';
+        state.profiles.bank.forEach((p, idx) => {
+            el.selProBank.innerHTML += `<option value="${idx}">${p.title}</option>`;
+        });
     }
 
-    function loadState() {
-        const d = JSON.parse(localStorage.getItem('devex_ultimate_v6'));
-        if (d) {
-            state.manualRate = d.manualRate || false;
-            state.lastSource = d.lastSource || 'robux';
-            el.usdRate.value = d.usdRate || 5.25;
-            el.devex.value = d.devex || 0.0038;
-            el.fee.value = d.fee || 26;
-            el.tax.value = d.tax || 10.82;
-            el.extra.checked = d.extra || false;
-            if (d.partners) state.partners = d.partners;
-            if (d.lastVal) {
-                el.robux.value = d.lastVal;
-                // Timeout pequeno para garantir que o DOM carregou
-                setTimeout(() => updateCalculations('robux'), 50);
-            }
-            
-            el.usdRate.disabled = !state.manualRate;
-            el.btnLock.innerText = state.manualRate ? '🔓' : '🔒';
+    window.saveProfile = (type) => {
+        let title = prompt("Nome para este perfil (ex: Banco Inter ou Minha Empresa):");
+        if(!title) return;
+        
+        let data = {};
+        if(type === 'from') {
+            data = { title: title, name: el.invFromName.value, address: el.invFromAddr.value };
+            state.profiles.from.push(data);
+        } else {
+            data = { title: title, details: el.invBank.value };
+            state.profiles.bank.push(data);
+        }
+        renderProfiles();
+        saveState();
+        alert("Perfil salvo!");
+    }
+
+    // Load Profile Event
+    el.selProFrom.addEventListener('change', (e) => {
+        const idx = e.target.value;
+        if(idx !== "") {
+            const p = state.profiles.from[idx];
+            el.invFromName.value = p.name;
+            el.invFromAddr.value = p.address;
+            saveInvoiceData(); // Salva estado atual da invoice
+        }
+    });
+
+    el.selProBank.addEventListener('change', (e) => {
+        const idx = e.target.value;
+        if(idx !== "") {
+            const p = state.profiles.bank[idx];
+            el.invBank.value = p.details;
+            saveInvoiceData();
+        }
+    });
+
+    // --- INVOICE PERSISTENCE ---
+    function saveInvoiceData() {
+        const invData = {
+            num: el.invNum.value,
+            date: el.invDate.value,
+            fromName: el.invFromName.value,
+            fromAddr: el.invFromAddr.value,
+            bank: el.invBank.value
+        };
+        localStorage.setItem('devex_inv_data', JSON.stringify(invData));
+    }
+
+    function loadInvoiceData() {
+        const d = JSON.parse(localStorage.getItem('devex_inv_data'));
+        if(d) {
+            el.invNum.value = d.num || '#INV-001';
+            el.invDate.value = d.date || '';
+            el.invFromName.value = d.fromName || '';
+            el.invFromAddr.value = d.fromAddr || '';
+            el.invBank.value = d.bank || '';
+        }
+        // Auto-update date if empty or old placeholder
+        if(!el.invDate.value || el.invDate.value.includes('2026-01-31')) {
+            el.invDate.value = `Date: ${new Date().toISOString().split('T')[0]}`;
         }
     }
 
-    // EVENTOS
-    el.robux.addEventListener('input', () => updateCalculations('robux'));
-    el.usd.addEventListener('input', () => updateCalculations('usd'));
-    el.brl.addEventListener('input', () => updateCalculations('brl'));
-
-    // CORREÇÃO: Ao mudar config, usa 'config' para lembrar qual foi o ultimo input usado
-    [el.devex, el.fee, el.tax, el.extra].forEach(x => 
-        x.addEventListener('input', () => updateCalculations('config'))
-    );
-
-    el.btnLock.addEventListener('click', () => {
-        state.manualRate = !state.manualRate;
-        el.usdRate.disabled = !state.manualRate;
-        el.btnLock.innerText = state.manualRate ? '🔓' : '🔒';
-        if (!state.manualRate) fetchRate();
-        saveState();
+    // Listeners for Invoice inputs (Auto-save)
+    [el.invNum, el.invDate, el.invFromName, el.invFromAddr, el.invBank].forEach(elem => {
+        elem.addEventListener('input', saveInvoiceData);
     });
 
-    el.usdRate.addEventListener('input', () => updateCalculations('config'));
-    el.btnRefresh.addEventListener('click', fetchRate);
+    // Invoice UI
+    el.btnOpenInv.addEventListener('click', () => {
+        const txt = `$${state.values.grossUsd.toLocaleString('en-US',{minimumFractionDigits:2})}`;
+        el.invAmount.innerText = txt; el.invTotal.innerText = txt;
+        loadInvoiceData(); // Garante dados frescos
+        el.modalInv.style.display = 'flex';
+    });
+    el.btnCloseInv.addEventListener('click', () => el.modalInv.style.display='none');
+    el.btnPrintInv.addEventListener('click', () => window.print());
 
-    // INICIAR
-    loadState();
-    if (!state.manualRate) fetchRate();
+    // --- SYSTEM ---
+    const fmt = (v) => v.toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+    async function fetchRate() {
+        if(!state.manualRate) {
+            el.btnRefresh.style.transform='rotate(180deg)';
+            try { const r = await fetch('https://economia.awesomeapi.com.br/last/USD-BRL'); const d = await r.json(); el.usdRate.value = parseFloat(d.USDBRL.bid).toFixed(2); } catch(e){}
+            setTimeout(()=>el.btnRefresh.style.transform='rotate(0deg)',500); updateCalc('config');
+        }
+    }
+    function saveState() {
+        const d = { manualRate:state.manualRate, usdRate:el.usdRate.value, lastSource:state.lastSource, devex:el.devex.value, fee:el.fee.value, tax:el.tax.value, extra:el.extra.checked, partners:state.partners, lastVal:el.robux.value, profiles: state.profiles };
+        localStorage.setItem('devex_v8', JSON.stringify(d));
+        el.toast.style.opacity='1'; setTimeout(()=>el.toast.style.opacity='0',1500);
+    }
+    function loadState() {
+        const d = JSON.parse(localStorage.getItem('devex_v8'));
+        if(d) {
+            state.manualRate=d.manualRate||false; state.lastSource=d.lastSource||'robux'; state.profiles = d.profiles || {from:[], bank:[]};
+            el.usdRate.value=d.usdRate||5.25; el.devex.value=d.devex||0.0038; el.fee.value=d.fee||26; el.tax.value=d.tax||10.82; el.extra.checked=d.extra||false;
+            if(d.partners) state.partners=d.partners; if(d.lastVal) { el.robux.value=d.lastVal; setTimeout(()=>updateCalc('robux'),50); }
+            el.usdRate.disabled=!state.manualRate; el.btnLock.innerText=state.manualRate?'🔓':'🔒';
+            renderProfiles();
+        }
+        loadInvoiceData(); // Load invoice text as well
+    }
 
+    // Events
+    el.robux.addEventListener('input',()=>updateCalc('robux')); el.usd.addEventListener('input',()=>updateCalc('usd')); el.brl.addEventListener('input',()=>updateCalc('brl'));
+    [el.devex,el.fee,el.tax,el.extra].forEach(x=>x.addEventListener('input',()=>updateCalc('config')));
+    el.btnLock.addEventListener('click',()=>{ state.manualRate=!state.manualRate; el.usdRate.disabled=!state.manualRate; el.btnLock.innerText=state.manualRate?'🔓':'🔒'; if(!state.manualRate)fetchRate(); saveState(); });
+    el.usdRate.addEventListener('input',()=>updateCalc('config')); el.btnRefresh.addEventListener('click',fetchRate);
+
+    loadState(); if(!state.manualRate) fetchRate();
 </script>
 </body>
 </html>
