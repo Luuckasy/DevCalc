@@ -11,7 +11,11 @@ const state = {
     
     profiles: { from: [], bank: [] },
     logoData: null,
-    items: [{ desc: "Roblox Developer Exchange (DevEx) - Services", qty: 1, price: 0 }],
+    items: [{ 
+        desc: "Developer Exchange Program (DevEx):\nO Developer Exchange Program permite que as pessoas ganhem dinheiro criando experiências no Roblox.\n\nAtuo como desenvolvedor independente, publicando experiências (jogos) e conteúdos digitais próprios na plataforma.\nPresto serviços de criação e monetização de experiências virtuais, recebendo em Robux que são convertidos em moeda real através do programa oficial DevEx.\n\nNão há vínculo empregatício com a Roblox; trata-se de atividade autoral e autônoma.", 
+        qty: 1, 
+        price: 0 
+    }],
     settings: { logoMode: 'img', logoColor: '#8a2be2', watermark: false }
 };
 
