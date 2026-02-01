@@ -7,7 +7,6 @@ body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helve
 header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 15px; border-bottom: 1px solid var(--border); }
 h2 { margin: 0; font-size: 1.2rem; color: var(--primary); }
 
-/* CORREÇÃO: Badge de Cotação maior */
 .rate-badge { background: var(--surface-light); padding: 5px 10px; border-radius: 8px; border: 1px solid var(--border); display: flex; align-items: center; gap: 8px; }
 .rate-input { width: 80px; background: transparent; border: none; color: white; font-weight: bold; text-align: right; font-size: 1.1rem; }
 .icon-btn { background: none; border: none; font-size: 1.1rem; padding: 0; cursor: pointer; color: #888; }
@@ -15,8 +14,6 @@ h2 { margin: 0; font-size: 1.2rem; color: var(--primary); }
 .input-stack { display: flex; flex-direction: column; gap: 12px; }
 .big-input-group { position: relative; }
 .big-input-group label { position: absolute; top: 8px; left: 12px; font-size: 0.75rem; color: var(--text-sec); font-weight: 700; }
-
-/* CORREÇÃO: Bordas Coloridas Restauradas */
 .big-input { width: 100%; background: var(--input-bg); border: 1px solid var(--border); padding: 24px 12px 8px 12px; border-radius: 10px; color: white; font-size: 1.2rem; box-sizing: border-box; transition: border 0.2s; }
 .big-input:focus { outline: none; border-color: var(--primary); background: #161616; }
 
@@ -49,7 +46,11 @@ h2 { margin: 0; font-size: 1.2rem; color: var(--primary); }
 /* --- INVOICE MODAL --- */
 #invoice-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 999; justify-content: center; align-items: flex-start; padding: 20px; box-sizing: border-box; overflow-y: auto; }
 
-.invoice-controls-panel { position: fixed; left: 20px; top: 20px; width: 200px; background: #1a1a1a; padding: 15px; border-radius: 10px; border: 1px solid #333; z-index: 1001; }
+.invoice-controls-panel { 
+    position: fixed; left: 20px; top: 20px; width: 200px; 
+    background: #1a1a1a; padding: 15px; border-radius: 10px; 
+    border: 1px solid #333; z-index: 1001; 
+}
 .invoice-controls-panel h3 { margin: 0 0 10px 0; font-size: 1rem; color: var(--primary); }
 .control-group { margin-bottom: 15px; }
 .btn-mini { padding: 5px 10px; border: 1px solid #444; background: #222; color: #fff; cursor: pointer; font-size: 0.8rem; border-radius: 4px; }
@@ -59,9 +60,17 @@ h2 { margin: 0; font-size: 1.2rem; color: var(--primary); }
 .btn-close { background: #444; color: #fff; }
 .btn-mini-icon { border:none; background:none; cursor:pointer; font-size:1rem; padding: 0 5px; }
 
+/* Papel */
 .invoice-paper { 
-    background: white; color: #111; width: 100%; max-width: 21cm; min-height: 29.7cm; padding: 1.5cm; margin: 0 auto; position: relative; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    border: 12px solid var(--gamer-dark); outline: 4px solid var(--gamer-purple); outline-offset: -12px; box-shadow: 0 0 50px rgba(0,0,0,0.5); box-sizing: border-box;
+    background: white; color: #111; 
+    width: 100%; max-width: 21cm; /* A4 width */
+    /* Removemos min-height fixa exagerada para evitar overflow visual */
+    min-height: 25cm; 
+    padding: 1.5cm; margin: 0 auto; position: relative; 
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    border: 12px solid var(--gamer-dark); 
+    outline: 4px solid var(--gamer-purple); outline-offset: -12px; 
+    box-shadow: 0 0 50px rgba(0,0,0,0.5); box-sizing: border-box;
 }
 
 .watermark { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 60%; opacity: 0.08; pointer-events: none; z-index: 0; display: flex; justify-content: center; align-items: center; }
@@ -98,11 +107,10 @@ h2 { margin: 0; font-size: 1.2rem; color: var(--primary); }
 .inv-total-area { width: 40%; }
 .total-row { display: flex; justify-content: space-between; background: #e6d6ff; border: 2px solid var(--gamer-dark); padding: 10px; font-weight: bold; align-items: center; }
 
-/* Textarea Expansível */
 .editable { 
     border: 1px dashed transparent; width: 100%; background: transparent; 
     resize: none; font-family: inherit; color: inherit; padding: 2px; 
-    overflow: hidden; min-height: 1.2em; /* Altura mínima */
+    overflow: hidden; min-height: 1.2em;
 }
 .editable:hover { background: #f9f9f9; border-color: #ccc; }
 .bold-input { font-weight: bold; font-size: 1.1rem; }
@@ -113,29 +121,84 @@ h2 { margin: 0; font-size: 1.2rem; color: var(--primary); }
 
 #toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--primary); color: #000; padding: 8px 20px; border-radius: 20px; font-weight: bold; opacity: 0; pointer-events: none; transition: opacity 0.3s; z-index: 2000; }
 
-/* --- LIMPEZA DE IMPRESSÃO --- */
-@media print {
-    @page { size: A4; margin: 0; }
-    body { background: white; margin: 0; padding: 0; }
+/* --- MOBILE RESPONSIVE TWEAKS --- */
+@media screen and (max-width: 768px) {
+    /* Stack Grids */
+    .settings-grid { grid-template-columns: 1fr; }
     
-    /* ESCONDE TUDO QUE NAO DEVE SAIR */
-    .app-container, .invoice-controls-panel, 
-    .profile-bar, .btn-save-profile, 
-    .btn-add-row, .btn-rem-row, .btn-mini-icon, 
-    .logo-text, .no-print { 
+    /* Mover Controles do Invoice para o Topo (Estático) */
+    .invoice-controls-panel {
+        position: relative; top: 0; left: 0; width: 100%; 
+        margin-bottom: 20px; box-sizing: border-box;
+    }
+    
+    /* Layout do Invoice Mobile (Stack) */
+    .invoice-paper { padding: 20px; border-width: 6px; outline-width: 2px; outline-offset: -6px; }
+    .inv-top-bar { flex-direction: column; align-items: center; gap: 20px; }
+    .inv-logo-center { position: relative; left: 0; transform: none; width: 100%; }
+    .inv-meta-block { text-align: center; width: 100%; }
+    .inv-meta-val { text-align: center; }
+    
+    .inv-grid { flex-direction: column; gap: 30px; margin-top: 20px; }
+    .inv-col { width: 100%; }
+    
+    .inv-footer { flex-direction: column; gap: 20px; }
+    .inv-payment-info, .inv-total-area { width: 100%; }
+    
+    .inv-title-large { font-size: 2rem; text-align: center; }
+}
+
+/* --- IMPRESSÃO (CORREÇÃO DE PÁGINA) --- */
+@media print {
+    @page { 
+        size: A4 portrait; 
+        margin: 0; 
+    }
+    html, body {
+        width: 100%;
+        height: 100%;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: white;
+    }
+    
+    .app-container, .invoice-controls-panel, .profile-bar, 
+    .btn-save-profile, .btn-add-row, .btn-rem-row, .btn-mini-icon, 
+    .logo-text, .no-print, header, .partners-section { 
         display: none !important; 
     }
     
-    #invoice-modal { display: block !important; position: absolute; top: 0; left: 0; width: 100%; height: auto; padding: 0; margin: 0; background: white; overflow: visible; }
-    
-    .invoice-paper { 
-        border: 12px solid var(--gamer-dark) !important; 
-        outline: 4px solid var(--gamer-purple) !important; 
-        padding: 1cm !important; margin: 0 !important; 
-        box-shadow: none; width: 100%; max-width: 100%; height: 100vh; 
-        -webkit-print-color-adjust: exact; print-color-adjust: exact;
+    #invoice-modal { 
+        display: block !important; 
+        position: relative !important; 
+        width: 100% !important; 
+        height: auto !important; 
+        overflow: visible !important; 
+        background: white !important;
+        padding: 0 !important;
     }
     
-    .editable { border: none !important; resize: none; background: transparent !important; }
+    .invoice-paper { 
+        /* RESET TOTAL PARA IMPRESSAO */
+        position: relative !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 1cm !important; /* Espaço para a borda */
+        box-shadow: none !important;
+        border: 12px solid var(--gamer-dark) !important;
+        outline: 4px solid var(--gamer-purple) !important;
+        box-sizing: border-box !important;
+        
+        /* O pulo do gato para caber numa folha mobile */
+        zoom: 0.9; 
+        page-break-inside: avoid;
+        
+        -webkit-print-color-adjust: exact; 
+        print-color-adjust: exact;
+    }
+    
+    /* Remove bordas de edição na impressão */
+    .editable { border: none !important; resize: none !important; }
     .logo-area { border: none !important; }
 }
