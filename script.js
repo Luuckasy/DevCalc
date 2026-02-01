@@ -185,11 +185,13 @@ function renderInvoiceTable() {
                     oninput="updateItem(${idx}, 'qty', this.value)" style="text-align:center;">
             </td>
             <td style="text-align:right;">
-                <input type="number" class="editable" value="${item.price}" 
-                    oninput="updateItem(${idx}, 'price', this.value)" style="text-align:right;" step="0.01">
+                <input type="text" class="editable" 
+                    value="${item.price.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}" 
+                    oninput="updateItem(${idx}, 'price', this.value)" 
+                    style="text-align:right;">
             </td>
             <td style="text-align:right; font-weight:bold;" id="row-total-${idx}">
-                $${total.toFixed(2)}
+                $${total.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}
             </td>
             <td class="no-print">
                 ${idx > 0 ? `<button class="btn-rem-row" onclick="remItem(${idx})">×</button>` : ''}
@@ -197,7 +199,6 @@ function renderInvoiceTable() {
         `;
         elems.invTableBody.appendChild(tr);
 
-        // Resize textareas
         setTimeout(() => { const txt = tr.querySelector('textarea'); if(txt) autoResize(txt); }, 0);
     });
 
@@ -211,15 +212,28 @@ function updateGrandTotal() {
 }
 
 window.updateItem = (idx, field, val) => {
-    if (field === 'qty' || field === 'price') val = parseFloat(val) || 0;
-    state.items[idx][field] = val;
+    // Se for preço ou quantidade, limpamos vírgulas antes de salvar
+    if (field === 'qty' || field === 'price') {
+        // Remove vírgulas para o JS entender o número (ex: "1,000.00" vira "1000.00")
+        let cleanVal = val.replace(/,/g, '');
+        state.items[idx][field] = parseFloat(cleanVal) || 0;
+    } else {
+        state.items[idx][field] = val;
+    }
 
+    // Atualiza visualmente o Total da Linha com formatação
     if (field === 'qty' || field === 'price') {
         const rowTotal = state.items[idx].qty * state.items[idx].price;
-        const rowEl = document.getElementById(`row-total-${idx}`);
-        if(rowEl) rowEl.innerText = `$${rowTotal.toFixed(2)}`;
+        const rowTotalEl = document.getElementById(`row-total-${idx}`);
+        
+        if (rowTotalEl) {
+            // MUDANÇA: Aplica formatação visual (vírgulas) no total da linha em tempo real
+            rowTotalEl.innerText = `$${rowTotal.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+        }
+        
         updateGrandTotal();
     }
+
     saveState();
 };
 
