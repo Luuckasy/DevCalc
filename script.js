@@ -207,8 +207,11 @@ function renderInvoiceTable() {
 
 function updateGrandTotal() {
     let grandTotal = 0;
-    state.items.forEach(item => { grandTotal += (item.qty * item.price); });
-    elems.invTotalFinal.innerText = `$${grandTotal.toLocaleString('en-US', { minimumFractionDigits: 2 })}`;
+    state.items.forEach(item => {
+        grandTotal += (item.qty * item.price);
+    });
+    // Formatação consistente
+    elems.invTotalFinal.innerText = `$${grandTotal.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 }
 
 window.updateItem = (idx, field, val) => {
