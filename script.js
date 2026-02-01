@@ -132,7 +132,7 @@ function loadState() {
     const d = JSON.parse(localStorage.getItem('devex_v16'));
     if (d) {
         state.manualRate = d.manualRate || false; state.lastSource = d.lastSource || 'robux'; state.profiles = d.profiles || { from: [], bank: [] }; state.settings = d.settings || state.settings; state.gamePresets = d.gamePresets || {};
-        elems.usdRate.value = d.usdRate || 5.255; elems.devex.value = d.devex || 0.0038; elems.fee.value = d.fee || 26; elems.tax.value = d.tax || 10.82; elems.extra.checked = d.extra || false; elems.spread.value = d.spread || 2.0;
+        elems.usdRate.value = d.usdRate || 5.255; elems.devex.value = d.devex || 0.0038; elems.fee.value = d.fee || 26; elems.tax.value = d.tax || 10.88; elems.extra.checked = d.extra || false; elems.spread.value = d.spread || 2.0;
         if (d.partners) state.partners = d.partners; if (d.lastVal) { elems.robux.value = d.lastVal; setTimeout(() => updateCalc('robux'), 50); }
         elems.usdRate.disabled = !state.manualRate; el('btn-lock').innerText = state.manualRate ? '🔓' : '🔒';
         elems.checkWatermark.checked = state.settings.watermark; elems.watermarkLayer.style.display = state.settings.watermark ? 'flex' : 'none'; elems.inpLogoColor.value = state.settings.logoColor; elems.logoInputText.style.color = state.settings.logoColor; toggleLogoMode(state.settings.logoMode); renderProfiles(); renderGamePresets();
