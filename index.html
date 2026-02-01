@@ -48,16 +48,26 @@
         <button class="btn-invoice" id="open-invoice">📄 Gerar Invoice</button>
     </div>
 
-    <div class="profile-bar" style="margin-bottom: 15px; border-bottom: 1px solid #ddd; padding-bottom: 10px; flex-wrap: wrap;">
-        <select id="sel-game-preset" class="profile-select" style="min-width: 150px;">
-            <option value="">Carregar Jogo...</option>
-        </select>
-        <div style="display:flex; gap:5px;">
-            <button class="btn-save-profile" id="btn-save-game" title="Salvar Jogo Atual">💾</button>
-            <button class="btn-save-profile" id="btn-del-game" title="Apagar Jogo" style="color:#ff4d4d;">🗑️</button>
-            <button class="btn-save-profile" id="btn-share-export" title="Copiar Configuração para enviar" style="background:#e6d6ff; color:#8a2be2;">📤</button>
-            <button class="btn-save-profile" id="btn-share-import" title="Colar Configuração recebida" style="background:#e6d6ff; color:#8a2be2;">📥</button>
+    <div class="partners-section">
+        <div class="partners-header">
+            <span style="font-weight:bold;">Sócios / Divisão</span>
+            <button class="btn-add" id="btn-add-partner">+ Add</button>
         </div>
+
+        <div class="profile-bar" style="margin-bottom: 15px; border-bottom: 1px solid #ddd; padding-bottom: 10px; flex-wrap: wrap;">
+            <select id="sel-game-preset" class="profile-select" style="min-width: 150px;">
+                <option value="">Carregar Jogo...</option>
+            </select>
+            <div style="display:flex; gap:5px;">
+                <button class="btn-save-profile" id="btn-save-game" title="Salvar Jogo Atual">💾</button>
+                <button class="btn-save-profile" id="btn-del-game" title="Apagar Jogo" style="color:#ff4d4d;">🗑️</button>
+                <button class="btn-save-profile" id="btn-share-export" title="Copiar Configuração para enviar" style="background:#e6d6ff; color:#8a2be2;">📤</button>
+                <button class="btn-save-profile" id="btn-share-import" title="Colar Configuração recebida" style="background:#e6d6ff; color:#8a2be2;">📥</button>
+            </div>
+        </div>
+
+        <div id="partners-list" class="partner-list"></div>
+        <div style="margin-top:10px;text-align:right;font-size:0.75rem;color:#666;">Alocado: <span id="alloc-total">100%</span></div>
     </div>
 </div>
 
