@@ -138,7 +138,71 @@ function loadState() {
         elems.checkWatermark.checked = state.settings.watermark; elems.watermarkLayer.style.display = state.settings.watermark ? 'flex' : 'none'; elems.inpLogoColor.value = state.settings.logoColor; elems.logoInputText.style.color = state.settings.logoColor; toggleLogoMode(state.settings.logoMode); renderProfiles(); renderGamePresets();
     } loadInvoiceData();
 }
+document.getElementById('btn-share-export').addEventListener('click', () => {
+    // O que vamos compartilhar? Presets de Jogos e Perfis Bancários
+    const shareData = {
+        games: state.gamePresets,
+        profiles: state.profiles
+    };
+    
+    // Converte para texto seguro (Base64) para não quebrar no WhatsApp
+    try {
+        const jsonStr = JSON.stringify(shareData);
+        const encoded = btoa(unescape(encodeURIComponent(jsonStr))); // UTF-8 safe base64
+        
+        // Copia para área de transferência
+        navigator.clipboard.writeText(encoded).then(() => {
+            alert("✅ CÓDIGO COPIADO!\n\nMande este código para seu sócio (WhatsApp/Discord).\nEle deve clicar no botão 'Importar' (📥) e colar este código.");
+        });
+    } catch (e) {
+        alert("Erro ao exportar: " + e.message);
+    }
+});
+document.getElementById('btn-share-import').addEventListener('click', async () => {
+    try {
+        // Tenta ler do clipboard automaticamente
+        let code = '';
+        try {
+            code = await navigator.clipboard.readText();
+        } catch (e) {
+            // Se não der (permissão negada), pede prompt manual
+            code = prompt("Cole o código recebido aqui:");
+        }
 
+        if (!code) return;
+
+        // Decodifica
+        const jsonStr = decodeURIComponent(escape(atob(code)));
+        const data = JSON.parse(jsonStr);
+
+        if (!data.games && !data.profiles) throw new Error("Código inválido");
+
+        if (confirm(`Importar dados?\n\nIsso irá adicionar:\n- ${Object.keys(data.games || {}).length} Jogos Presets\n- ${data.profiles?.bank?.length || 0} Contas Bancárias\n- ${data.profiles?.from?.length || 0} Perfis Pessoais`)) {
+            
+            // Mescla os dados (não apaga os seus, só adiciona/sobrescreve)
+            state.gamePresets = { ...state.gamePresets, ...data.games };
+            
+            // Mescla perfis (evitando duplicatas simples)
+            if(data.profiles) {
+                if(!state.profiles.from) state.profiles.from = [];
+                if(!state.profiles.bank) state.profiles.bank = [];
+                
+                // Adiciona apenas se não existir (lógica simples)
+                data.profiles.from.forEach(p => state.profiles.from.push(p));
+                data.profiles.bank.forEach(p => state.profiles.bank.push(p));
+            }
+
+            renderGamePresets();
+            renderProfiles();
+            saveState();
+            alert("✅ Dados importados com sucesso!");
+        }
+
+    } catch (e) {
+        alert("❌ Código inválido ou corrompido.\nCertifique-se de ter copiado o código inteiro.");
+        console.error(e);
+    }
+});
 elems.robux.addEventListener('input', () => updateCalc('robux')); elems.usd.addEventListener('input', () => updateCalc('usd')); elems.brl.addEventListener('input', () => updateCalc('brl'));
 [elems.devex, elems.fee, elems.tax, elems.extra, elems.spread].forEach(x => x.addEventListener('input', () => updateCalc('config')));
 el('btn-lock').addEventListener('click', () => { state.manualRate = !state.manualRate; elems.usdRate.disabled = !state.manualRate; el('btn-lock').innerText = state.manualRate ? '🔓' : '🔒'; if (!state.manualRate) fetchRate(); saveState(); });
