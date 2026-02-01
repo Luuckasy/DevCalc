@@ -89,14 +89,26 @@
     <div class="invoice-paper">
         <div id="watermark-layer" class="watermark" style="display:none;"><img id="watermark-img" src="" alt=""></div>
         <div class="inv-top-bar">
-            <div style="flex: 1;"><h1 class="inv-title-large">INVOICE</h1></div>
+            <div style="flex: 1;">
+                <h1 class="inv-title-large">INVOICE</h1>
+            </div>
+
             <div class="inv-logo-center">
-                <div class="logo-area" id="logo-trigger"><span class="logo-text" id="logo-text">CLIQUE P/ LOGO</span><img id="logo-img" alt="Logo"><input type="file" id="logo-upload" accept="image/*" style="display:none"></div>
+                <div class="logo-area" id="logo-trigger">
+                    <span class="logo-text" id="logo-text">CLIQUE P/ LOGO</span>
+                    <img id="logo-img" alt="Logo">
+                    <input type="file" id="logo-upload" accept="image/*" style="display:none">
+                </div>
                 <input class="editable logo-text-mode" id="logo-input-text" value="CL GAMES" style="display:none;">
             </div>
+
             <div class="inv-meta-block" style="flex: 1;">
-                <div class="inv-meta-label">INVOICE # <button class="btn-mini-icon" id="btn-gen-id">🎲</button></div>
+                <div class="inv-meta-label">
+                    INVOICE # 
+                    <button class="btn-mini-icon no-print" id="btn-gen-id" title="Gerar ID">🎲</button>
+                </div>
                 <input class="inv-meta-val" id="inv-num" value="#INV-001">
+                
                 <div class="inv-meta-label" style="margin-top:10px;">DATE</div>
                 <input class="inv-meta-val" id="inv-date">
             </div>
